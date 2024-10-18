@@ -25,7 +25,7 @@ const CustomButton = ({ name, Icon, isDropDown }) => {
 const MainDash = () => {
   return (
     <>
-      <div className="w-full h-full bg-transparent absolute top-0 left-0 flex justify-center items-center hidden ">
+      <div className="w-full h-full bg-transparent absolute top-0 left-0 flex justify-center items-center ">
         <div className="w-1/2 h-96 bg-white shadow-2xl rounded-2xl"></div>
       </div>
       <div className="flex flex-[0.853] flex-col px-10 py-6 w-full h-full overflow-y-scroll">
