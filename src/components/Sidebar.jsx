@@ -1,6 +1,7 @@
 import {
   AddIcon1,
   HomeIcon,
+  LightIcon,
   MembersIcon,
   MessageIcon,
   SettingsIcon,
@@ -49,7 +50,7 @@ const Sidebar = () => {
       <div className="flex flex-1 flex-col">
         {/* Top portion */}
 
-        <div className="flex flex-col items-start space-y-5 py-6  border-b border-[#DBDBDB]">
+        <div className="flex flex-col items-start space-y-4 py-6  border-b border-[#DBDBDB]">
           <SideBarCol Icon={HomeIcon} name={"Home"} />
           <SideBarCol Icon={MessageIcon} name={"Messages"} />
           <SideBarCol Icon={TaskIcon} name={"Tasks"} />
@@ -66,7 +67,7 @@ const Sidebar = () => {
           </div>
 
           {/* projects list */}
-          <div className="flex flex-col items-star py-6 space-y-5">
+          <div className="flex flex-col items-star py-6 space-y-2">
             <ProjectCol
               name={"Mobile App"}
               color={"bg-[#7AC555]"}
@@ -88,6 +89,25 @@ const Sidebar = () => {
               isSelected={false}
             />
           </div>
+        </div>
+
+        {/* Thoughts container */}
+        <div className="bg-[#F5F5F5] flex flex-col items-center justify-center rounded-2xl px-3 pb-4">
+          <div className="rounded-full px-5 py-4 bg-[#F5F5F5] -mt-7">
+            <div>
+              <LightIcon />
+            </div>
+          </div>
+
+          <p className="text-sm font-medium">Thoughts Time</p>
+          <p className="text-xs text-[#787486] text-center py-2">
+            We don’t have any notice for you, till then you can share your
+            thoughts with your peers.
+          </p>
+
+          <button className="w-full text-sm font-medium bg-white rounded py-1">
+            Write a message
+          </button>
         </div>
       </div>
     </div>

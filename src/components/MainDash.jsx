@@ -104,7 +104,7 @@ const MainDash = () => {
           />
         </div>
       </div>
-      <div className="flex flex-[0.860] flex-col px-10 py-6 w-full h-full overflow-y-scroll">
+      <div className="flex flex-[0.860] flex-col px-10 py-6 w-full h-full overflow-y-scroll pb-24">
         {/* Top project info part */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between">

@@ -39,7 +39,7 @@ const Header = () => {
 
         <div className="flex items-center">
           {/* Left part */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-5">
             <CalenderIcon />
             <NotificationIcon />
             <BellIcon />
