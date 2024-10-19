@@ -45,7 +45,7 @@ const ProjectCol = ({ name, color, isSelected }) => {
 
 const Sidebar = () => {
   return (
-    <div className="flex-[0.147] border-r border-[#DBDBDB] w-full h-full  px-3">
+    <div className="flex-[0.140] border-r border-[#DBDBDB] w-full h-full  px-3">
       <div className="flex flex-1 flex-col">
         {/* Top portion */}
 

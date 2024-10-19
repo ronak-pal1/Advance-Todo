@@ -13,7 +13,7 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
 
   const [todoName, setTodoName] = useState("");
   const [todoDesp, setTodoDesp] = useState("");
-  const [todoPriority, setTodoPriority] = useState("low");
+  const [todoPriority, setTodoPriority] = useState("1");
 
   useEffect(() => {
     if (isAddingTodo.todoNo == 0)
@@ -40,7 +40,7 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
 
     setTodoName("");
     setTodoDesp("");
-    setTodoPriority("low");
+    setTodoPriority("1");
 
     closeTodo();
   };
@@ -76,9 +76,9 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
             value={todoPriority}
             onChange={(e) => setTodoPriority(e.target.value)}
           >
-            <option value="low">Low</option>
-            <option value="high">High</option>
-            <option value="completed">Completed</option>
+            <option value="1">Low</option>
+            <option value="0">High</option>
+            <option value="2">Completed</option>
           </select>
         </div>
 

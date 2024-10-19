@@ -8,6 +8,7 @@ import {
   LinkIcon,
   MenuLayoutIcon,
   ShareIcon,
+  TickIcon,
   TileLayoutIcon,
 } from "../SVGIcons";
 import InvitedProfiles from "../assets/InvitedProfiles.svg";
@@ -15,7 +16,13 @@ import TodoContainer from "./TodoContainer";
 import AddTodo from "./AddTodo";
 import { useSelector } from "react-redux";
 
-const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
+const CustomButton = ({
+  name,
+  Icon,
+  isDropDown,
+  isFunctional = true,
+  setFiltering,
+}) => {
   const [isDroppedDown, setIsDroppedDown] = useState(false);
 
   const dropdown = () => {
@@ -23,6 +30,9 @@ const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
 
     setIsDroppedDown(!isDroppedDown);
   };
+
+  const [isFilteringSelected, setIsFilteringSelected] = useState(false);
+
   return (
     <div className="w-fit h-fit relative">
       <div
@@ -35,7 +45,16 @@ const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
       </div>
       {isDropDown && isDroppedDown && (
         <div className="absolute w-52 px-4 py-4 h-fit bg-white shadow-2xl rounded-md [&>*]:text-[#0D062D] [&>*]:font-medium [&>*]:cursor-pointer">
-          <p>By prioprity</p>
+          <div
+            onClick={() => {
+              setFiltering((value) => !value);
+              setIsFilteringSelected(!isFilteringSelected);
+            }}
+            className="flex items-center justify-between"
+          >
+            <p>By prioprity</p>
+            {isFilteringSelected && <TickIcon />}
+          </div>
         </div>
       )}
     </div>
@@ -45,8 +64,31 @@ const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
 const MainDash = () => {
   const [isAddingTodo, setIsAddingTodo] = useState({ state: false, todoNo: 0 });
   const todos = useSelector((state) => state);
+  const [isFiltering, setFiltering] = useState(false);
+  const [allToDo, setAllToDo] = useState([]);
+  const [allInProgress, setAllInProgress] = useState([]);
+  const [allDone, setAllDone] = useState([]);
 
-  useEffect(() => {}, []);
+  const filterByPriority = (arr) => {
+    // high -> low -> completed
+    // 0 -> 1 -> 2
+
+    return arr.sort((todo1, todo2) => {
+      return parseInt(todo1.priority) - parseInt(todo2.priority);
+    });
+  };
+
+  useEffect(() => {
+    if (isFiltering) {
+      setAllToDo(filterByPriority([...todos?.toDo]));
+      setAllInProgress(filterByPriority([...todos?.inProgress]));
+      setAllDone(filterByPriority([...todos?.done]));
+    } else {
+      setAllToDo(todos?.toDo);
+      setAllInProgress(todos?.inProgress);
+      setAllDone(todos?.done);
+    }
+  }, [isFiltering, todos]);
 
   return (
     <>
@@ -62,7 +104,7 @@ const MainDash = () => {
           />
         </div>
       </div>
-      <div className="flex flex-[0.853] flex-col px-10 py-6 w-full h-full overflow-y-scroll">
+      <div className="flex flex-[0.860] flex-col px-10 py-6 w-full h-full overflow-y-scroll">
         {/* Top project info part */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between">
@@ -90,6 +132,8 @@ const MainDash = () => {
                 name={"Filter"}
                 Icon={FilterIcon}
                 isDropDown={true}
+                isFiltering={false}
+                setFiltering={setFiltering}
               />
               <CustomButton
                 name={"Today"}
@@ -121,7 +165,7 @@ const MainDash = () => {
             color={"#5030E5"}
             canAdd={true}
             setIsAddingTodo={setIsAddingTodo}
-            allTodos={todos?.toDo}
+            allTodos={allToDo}
           />
           <TodoContainer
             todoNo={1}
@@ -129,14 +173,14 @@ const MainDash = () => {
             color={"#FFA500"}
             canAdd={true}
             setIsAddingTodo={setIsAddingTodo}
-            allTodos={todos?.inProgress}
+            allTodos={allInProgress}
           />
           <TodoContainer
             todoNo={2}
             name={"Done"}
             color={"#8BC48A"}
             canAdd={true}
-            setIsAddingTodo={setIsAddingTodo}
+            setIsAddingTodo={allDone}
             allTodos={todos?.done}
           />
         </div>
