@@ -1,15 +1,7 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
-  toDo: [
-    {
-      id: 1,
-      type: 0,
-      name: "this is a todo",
-      desp: "this is a description",
-      priority: "low",
-    },
-  ],
+  toDo: [],
   inProgress: [],
   done: [],
 };
@@ -46,15 +38,37 @@ const removeTodoFun = (state, action) => {
   localStorage.setItem("todos", JSON.stringify(state));
 };
 
+const transferTodoFun = (state, action) => {
+  const todoTypes = ["toDo", "inProgress", "done"];
+  console.log("todo transferred");
+
+  const transferInfo = action.payload;
+  console.log(transferInfo.type);
+
+  state[todoTypes[transferInfo.type]] = state[
+    todoTypes[transferInfo.type]
+  ].filter((todo) => todo.id != transferInfo.id);
+  state[todoTypes[transferInfo.toType]].push({
+    id: transferInfo.id,
+    type: transferInfo.toType,
+    name: transferInfo.name,
+    desp: transferInfo.desp,
+    priority: transferInfo.priority,
+  });
+
+  localStorage.setItem("todos", JSON.stringify(state));
+};
+
 export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
     addTodo: addTodoFun,
     removeTodo: removeTodoFun,
+    transferTodo: transferTodoFun,
   },
 });
 
-export const { addTodo, removeTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, transferTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;

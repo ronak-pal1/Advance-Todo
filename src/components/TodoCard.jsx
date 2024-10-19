@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FilesIcon, MessageIcon, ThreeDotsIcon } from "../SVGIcons";
 import TodoCardInvitedProf from "../assets/TodoCardInvitedProf.svg";
 import { useDispatch } from "react-redux";
@@ -48,51 +48,73 @@ const TodoCard = ({ todoInfo }) => {
     setPriorityColor({ txt, bg });
   }, [todoInfo]);
 
+  const mainCardRef = useRef(null); // for the outer div
+
+  const handleOnDrag = (e) => {
+    mainCardRef.current.style.border = "1px dashed blue";
+    e.dataTransfer.clearData();
+    e.dataTransfer.setData("todoInfo", JSON.stringify(todoInfo));
+  };
+
+  const handleOnDragEnd = (e) => {
+    mainCardRef.current.style.border = "none";
+  };
+
   return (
-    <div className="w-full h-fit bg-white rounded-2xl px-4 py-4 flex-shrink-0">
-      <div className="flex items-center justify-between">
-        <p
-          className="text-xs font-medium w-fit h-fit px-2 py-1 rounded-[4px]"
-          style={{
-            color: priorityColor.txt,
-            backgroundColor: priorityColor.bg,
-          }}
-        >
-          {priorityText[parseInt(todoInfo?.priority)]}
-        </p>
-
-        <div className="relative">
-          <div onClick={() => setIsDroppedDown(!isDroppedDown)}>
-            <ThreeDotsIcon />
-          </div>
-
-          <div
-            className={`w-fit h-fit bg-white shadow-2xl absolute px-4 py-2 rounded-md ${
-              isDroppedDown ? "flex" : "hidden"
-            }`}
+    <div
+      ref={mainCardRef}
+      className="w-full h-fit bg-white rounded-2xl px-4 py-4 flex-shrink-0"
+      draggable
+      onDragStart={(e) => handleOnDrag(e)}
+      onDragEnd={(e) => handleOnDragEnd(e)}
+    >
+      <div>
+        <div className="flex items-center justify-between">
+          <p
+            className="text-xs font-medium w-fit h-fit px-2 py-1 rounded-[4px]"
+            style={{
+              color: priorityColor.txt,
+              backgroundColor: priorityColor.bg,
+            }}
           >
-            <p
-              className="text-sm font-semibold text-red-400 cursor-pointer"
-              onClick={deleteTodo}
+            {priorityText[parseInt(todoInfo?.priority)]}
+          </p>
+
+          <div className="relative">
+            <div onClick={() => setIsDroppedDown(!isDroppedDown)}>
+              <ThreeDotsIcon />
+            </div>
+
+            <div
+              className={`w-fit h-fit bg-white shadow-2xl absolute px-4 py-2 rounded-md ${
+                isDroppedDown ? "flex" : "hidden"
+              }`}
             >
-              Delete
-            </p>
+              <p
+                className="text-sm font-semibold text-red-400 cursor-pointer"
+                onClick={deleteTodo}
+              >
+                Delete
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className=" mt-3">
-        <p className="text-[#0D062D] text-lg font-semibold">{todoInfo?.name}</p>
-        <p className="text-[#787486] text-xs leading-4 mt-2">
-          {todoInfo?.desp}
-        </p>
-      </div>
+        <div className=" mt-3">
+          <p className="text-[#0D062D] text-lg font-semibold">
+            {todoInfo?.name}
+          </p>
+          <p className="text-[#787486] text-xs leading-4 mt-2">
+            {todoInfo?.desp}
+          </p>
+        </div>
 
-      <div className="flex items-center justify-between mt-3">
-        <img src={TodoCardInvitedProf} />
-        <div className="flex items-center space-x-2">
-          <InfoView name={"Comments"} count={11} Icon={MessageIcon} />
-          <InfoView name={"Files"} count={0} Icon={FilesIcon} />
+        <div className="flex items-center justify-between mt-3">
+          <img src={TodoCardInvitedProf} />
+          <div className="flex items-center space-x-2">
+            <InfoView name={"Comments"} count={11} Icon={MessageIcon} />
+            <InfoView name={"Files"} count={0} Icon={FilesIcon} />
+          </div>
         </div>
       </div>
     </div>

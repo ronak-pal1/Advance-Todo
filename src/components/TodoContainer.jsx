@@ -1,5 +1,7 @@
+import { useDispatch } from "react-redux";
 import { AddIcon2 } from "../SVGIcons";
 import TodoCard from "./TodoCard";
+import { transferTodo } from "../app/todoSlice";
 
 const TodoContainer = ({
   name,
@@ -9,8 +11,22 @@ const TodoContainer = ({
   todoNo,
   allTodos,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleOnDrop = (e) => {
+    const droppedTodo = JSON.parse(e.dataTransfer.getData("todoInfo"));
+    droppedTodo["toType"] = todoNo;
+    console.log(droppedTodo);
+
+    dispatch(transferTodo(droppedTodo));
+  };
+
   return (
-    <div className="flex flex-col flex-[0.33] h-full bg-[#F5F5F5] rounded-2xl px-5 py-4">
+    <div
+      className="flex flex-col flex-[0.33] h-full bg-[#F5F5F5] rounded-2xl px-5 py-4"
+      onDrop={(e) => handleOnDrop(e)}
+      onDragOver={(e) => e.preventDefault()}
+    >
       {/* Todo container heading */}
       <div
         className={`flex items-center justify-between border-b-[3px] py-3 `}
