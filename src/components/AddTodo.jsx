@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { CloseIcon } from "../SVGIcons";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../app/todoSlice";
 
 const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
   const [currentTodoInfo, setCurrentTodoInfo] = useState({
     dotColor: "#5030E5",
     name: "To Do",
   });
+
+  const dispatch = useDispatch();
+
+  const [todoName, setTodoName] = useState("");
+  const [todoDesp, setTodoDesp] = useState("");
+  const [todoPriority, setTodoPriority] = useState("low");
 
   useEffect(() => {
     if (isAddingTodo.todoNo == 0)
@@ -18,6 +26,23 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
 
   const closeTodo = () => {
     setIsAddingTodo({ state: false, todoNo: isAddingTodo.todoNo });
+  };
+
+  const addTodoNow = () => {
+    dispatch(
+      addTodo({
+        type: isAddingTodo.todoNo,
+        name: todoName,
+        desp: todoDesp,
+        priority: todoPriority,
+      })
+    );
+
+    setTodoName("");
+    setTodoDesp("");
+    setTodoPriority("low");
+
+    closeTodo();
   };
 
   return (
@@ -45,7 +70,12 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
             Prioprity :{" "}
           </label>
 
-          <select name="prioprity" className="outline-none text-xs">
+          <select
+            name="prioprity"
+            className="outline-none text-xs"
+            value={todoPriority}
+            onChange={(e) => setTodoPriority(e.target.value)}
+          >
             <option value="low">Low</option>
             <option value="high">High</option>
             <option value="completed">Completed</option>
@@ -56,16 +86,24 @@ const AddTodo = ({ setIsAddingTodo, isAddingTodo }) => {
           type="text"
           placeholder="Name"
           className="text-2xl outline-none w-full border-b py-3"
+          value={todoName}
+          onChange={(e) => setTodoName(e.target.value)}
         />
+
         <input
           type="text"
           placeholder="Description"
           className="text-lg outline-none w-full border-b py-3"
+          value={todoDesp}
+          onChange={(e) => setTodoDesp(e.target.value)}
         />
       </div>
 
       <div className="w-full flex justify-center mt-5">
-        <button className="bg-[#5030E5] text-white px-5 py-3 text-xs rounded-md">
+        <button
+          className="bg-[#5030E5] text-white px-5 py-3 text-xs rounded-md"
+          onClick={addTodoNow}
+        >
           Add Task
         </button>
       </div>

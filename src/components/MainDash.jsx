@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AddIcon2,
   DateIcon,
@@ -13,6 +13,7 @@ import {
 import InvitedProfiles from "../assets/InvitedProfiles.svg";
 import TodoContainer from "./TodoContainer";
 import AddTodo from "./AddTodo";
+import { useSelector } from "react-redux";
 
 const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
   const [isDroppedDown, setIsDroppedDown] = useState(false);
@@ -43,6 +44,9 @@ const CustomButton = ({ name, Icon, isDropDown, isFunctional = true }) => {
 
 const MainDash = () => {
   const [isAddingTodo, setIsAddingTodo] = useState({ state: false, todoNo: 0 });
+  const todos = useSelector((state) => state);
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -117,6 +121,7 @@ const MainDash = () => {
             color={"#5030E5"}
             canAdd={true}
             setIsAddingTodo={setIsAddingTodo}
+            allTodos={todos?.toDo}
           />
           <TodoContainer
             todoNo={1}
@@ -124,6 +129,7 @@ const MainDash = () => {
             color={"#FFA500"}
             canAdd={true}
             setIsAddingTodo={setIsAddingTodo}
+            allTodos={todos?.inProgress}
           />
           <TodoContainer
             todoNo={2}
@@ -131,6 +137,7 @@ const MainDash = () => {
             color={"#8BC48A"}
             canAdd={true}
             setIsAddingTodo={setIsAddingTodo}
+            allTodos={todos?.done}
           />
         </div>
       </div>
