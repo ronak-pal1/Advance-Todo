@@ -1,7 +1,7 @@
 import { AddIcon2 } from "../SVGIcons";
 import TodoCard from "./TodoCard";
 
-const TodoContainer = ({ name, color, canAdd }) => {
+const TodoContainer = ({ name, color, canAdd, setIsAddingTodo, todoNo }) => {
   return (
     <div className="flex flex-col flex-[0.33] h-full bg-[#F5F5F5] rounded-2xl px-5 py-4">
       {/* Todo container heading */}
@@ -22,7 +22,11 @@ const TodoContainer = ({ name, color, canAdd }) => {
           </p>
         </div>
 
-        {canAdd && <AddIcon2 size={"24"} />}
+        {canAdd && (
+          <div onClick={() => setIsAddingTodo({ state: true, todoNo: todoNo })}>
+            <AddIcon2 size={"24"} />
+          </div>
+        )}
       </div>
 
       {/* all todos */}
