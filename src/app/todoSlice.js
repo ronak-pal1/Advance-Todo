@@ -24,15 +24,11 @@ const addTodoFun = (state, action) => {
 };
 
 const removeTodoFun = (state, action) => {
-  if (action.payload.type == 0) {
-    state.toDo = state.toDo.filter((todo) => todo.id != action.payload.id);
-  } else if (action.payload.type == 1) {
-    state.inProgress = state.inProgress.filter(
-      (todo) => todo.id != action.payload.id
-    );
-  } else if (action.payload.type == 2) {
-    state.done = state.done.filter((todo) => todo.id != action.payload.id);
-  }
+  const todoTypes = ["toDo", "inProgress", "done"];
+
+  state[todoTypes[action.payload.type]] = state[
+    todoTypes[action.payload.type]
+  ].filter((todo) => todo.id != action.payload.id);
 
   // Saving the state in the local storage
   localStorage.setItem("todos", JSON.stringify(state));
@@ -56,6 +52,7 @@ const transferTodoFun = (state, action) => {
     priority: transferInfo.priority,
   });
 
+  // Saving the state in the local storage
   localStorage.setItem("todos", JSON.stringify(state));
 };
 
