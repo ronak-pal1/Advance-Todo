@@ -30,8 +30,8 @@ const ProjectCol = ({ name, color, isSelected }) => {
         <p
           className={`${
             isSelected
-              ? "text-[#787486] font-medium"
-              : "text-[#0D062D] font-semibold"
+              ? "text-[#0D062D] font-semibold"
+              : "text-[#787486] font-medium"
           } ml-3`}
         >
           {name}
